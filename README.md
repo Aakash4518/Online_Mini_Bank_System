@@ -7,7 +7,7 @@ Assignment 4 — Round 2 submission.
 
 ## 🌐 Live Demo
 
-> *(Deploy to Vercel / Netlify / GitHub Pages and paste your URL here)*
+> (https://online-mini-bank-system.netlify.app/)
 
 ---
 
