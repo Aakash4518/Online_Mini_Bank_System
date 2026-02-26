@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Bank Mini System | Assignment 4</title>
+  <meta name="description" content="A complete online banking mini system with account creation, deposits, withdrawals, and secure KYC-validated money transfers." />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <!-- Toast container (fixed overlay) -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- ── Header ─────────────────────────────────────────────── -->
+  <header class="header" role="banner">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">🏦</div>
+        <div>
+          <div class="logo-text">NexBank</div>
+          <div class="logo-sub">Online Bank Mini System</div>
+        </div>
+      </div>
+      <div class="header-badge">
+        <div class="status-dot"></div>
+        <span>System Online</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Main App Container ─────────────────────────────────── -->
+  <main class="app-container" role="main">
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-area tab-nav" role="navigation" aria-label="Main navigation">
+      <button class="tab-btn active" data-tab="create" id="tab-create" aria-label="Create Account">
+        <span class="icon">➕</span><span>Create Account</span>
+      </button>
+      <button class="tab-btn" data-tab="deposit" id="tab-deposit" aria-label="Deposit Money">
+        <span class="icon">💰</span><span>Deposit</span>
+      </button>
+      <button class="tab-btn" data-tab="withdraw" id="tab-withdraw" aria-label="Withdraw Money">
+        <span class="icon">💸</span><span>Withdraw</span>
+      </button>
+      <button class="tab-btn" data-tab="transfer" id="tab-transfer" aria-label="Transfer Money">
+        <span class="icon">🔀</span><span>Transfer</span>
+      </button>
+      <button class="tab-btn" data-tab="accounts" id="tab-accounts" aria-label="All Accounts">
+        <span class="icon">📋</span><span>All Accounts</span>
+      </button>
+    </nav>
+
+    <!-- ── SCREEN: Create Account ─────────────────────────── -->
+    <section class="main-area screen" id="screen-create" aria-labelledby="h-create">
+      <div class="card">
+        <div class="card-header">
+          <h1 class="card-title" id="h-create">
+            <span class="title-icon purple">➕</span>
+            Create Account
+          </h1>
+          <p class="card-subtitle">Open a new bank account in seconds</p>
+        </div>
+
+        <form id="form-create" novalidate>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label class="form-label" for="create-name">Full Name</label>
+              <input
+                class="form-input"
+                type="text"
+                id="create-name"
+                name="holderName"
+                placeholder="e.g. Rahul Sharma"
+                required
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="create-balance">Initial Deposit (₹)</label>
+              <input
+                class="form-input"
+                type="number"
+                id="create-balance"
+                name="initialBalance"
+                placeholder="0.00"
+                min="0"
+                step="0.01"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">KYC Status</label>
+              <label class="checkbox-row" for="create-kyc" style="height:46px; background:rgba(255,255,255,0.04); border:1px solid var(--border-color); border-radius:var(--radius-md); padding:0 16px;">
+                <input type="checkbox" id="create-kyc" name="isKYCVerified" />
+                <span class="checkbox-label">Mark as KYC Verified</span>
+              </label>
+            </div>
+
+            <div class="form-group full">
+              <button type="submit" class="btn btn-primary btn-full" id="btn-create-submit">
+                🏦 Create Account
+              </button>
+            </div>
+          </div>
+
+          <!-- Inline result alert -->
+          <div class="form-alert" id="alert-create" role="alert"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── SCREEN: Deposit ────────────────────────────────── -->
+    <section class="main-area screen section-hidden" id="screen-deposit" aria-labelledby="h-deposit">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="h-deposit">
+            <span class="title-icon green">💰</span>
+            Deposit Money
+          </h2>
+          <p class="card-subtitle">Add funds to an existing account</p>
+        </div>
+
+        <form id="form-deposit" novalidate>
+          <div class="form-grid cols-1">
+            <div class="form-group">
+              <label class="form-label" for="deposit-account">Select Account</label>
+              <select class="form-select" id="deposit-account" name="accountNo" required>
+                <option value="">— Select Account —</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="deposit-amount">Deposit Amount (₹)</label>
+              <input
+                class="form-input"
+                type="number"
+                id="deposit-amount"
+                name="amount"
+                placeholder="Enter amount"
+                min="1"
+                step="0.01"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary btn-full" id="btn-deposit-submit">
+                💰 Deposit Funds
+              </button>
+            </div>
+          </div>
+
+          <div class="form-alert" id="alert-deposit" role="alert"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── SCREEN: Withdraw ───────────────────────────────── -->
+    <section class="main-area screen section-hidden" id="screen-withdraw" aria-labelledby="h-withdraw">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="h-withdraw">
+            <span class="title-icon gold">💸</span>
+            Withdraw Money
+          </h2>
+          <p class="card-subtitle">Withdraw funds from an account</p>
+        </div>
+
+        <form id="form-withdraw" novalidate>
+          <div class="form-grid cols-1">
+            <div class="form-group">
+              <label class="form-label" for="withdraw-account">Select Account</label>
+              <select class="form-select" id="withdraw-account" name="accountNo" required>
+                <option value="">— Select Account —</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="withdraw-amount">Withdrawal Amount (₹)</label>
+              <input
+                class="form-input"
+                type="number"
+                id="withdraw-amount"
+                name="amount"
+                placeholder="Enter amount"
+                min="1"
+                step="0.01"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <button type="submit" class="btn btn-danger btn-full" id="btn-withdraw-submit">
+                💸 Withdraw Funds
+              </button>
+            </div>
+          </div>
+
+          <div class="form-alert" id="alert-withdraw" role="alert"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── SCREEN: Transfer ───────────────────────────────── -->
+    <section class="main-area screen section-hidden" id="screen-transfer" aria-labelledby="h-transfer">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="h-transfer">
+            <span class="title-icon blue">🔀</span>
+            Transfer Money
+          </h2>
+          <p class="card-subtitle">Securely transfer funds between accounts</p>
+        </div>
+
+        <!-- Validation rules notice -->
+        <div class="transfer-info-box">
+          <strong>Transfer Validation Rules:</strong>
+          <ul>
+            <li>Sender account must be <strong>KYC Verified</strong></li>
+            <li>Sender must have <strong>sufficient balance</strong></li>
+            <li>Sender and receiver must be <strong>different</strong> accounts</li>
+          </ul>
+        </div>
+
+        <form id="form-transfer" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="transfer-sender">Sender Account</label>
+              <select class="form-select" id="transfer-sender" name="senderAccountNo" required>
+                <option value="">— Select Sender —</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="transfer-receiver">Receiver Account</label>
+              <select class="form-select" id="transfer-receiver" name="receiverAccountNo" required>
+                <option value="">— Select Receiver —</option>
+              </select>
+            </div>
+
+            <div class="form-group full">
+              <label class="form-label" for="transfer-amount">Transfer Amount (₹)</label>
+              <input
+                class="form-input"
+                type="number"
+                id="transfer-amount"
+                name="amount"
+                placeholder="Enter amount to transfer"
+                min="1"
+                step="0.01"
+                required
+              />
+            </div>
+
+            <div class="form-group full">
+              <button type="submit" class="btn btn-primary btn-full" id="btn-transfer-submit">
+                🔀 Transfer Money
+              </button>
+            </div>
+          </div>
+
+          <div class="form-alert" id="alert-transfer" role="alert"></div>
+        </form>
+      </div>
+    </section>
+
+    <!-- ── SCREEN: All Accounts ───────────────────────────── -->
+    <section class="main-area screen section-hidden" id="screen-accounts" aria-labelledby="h-accounts">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title" id="h-accounts">
+            <span class="title-icon gold">📋</span>
+            All Accounts
+          </h2>
+          <p class="card-subtitle">Overview of every registered bank account</p>
+        </div>
+
+        <!-- Summary stats -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-value" id="stat-total-accounts">0</div>
+            <div class="stat-label">Total Accounts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-kyc-accounts">0</div>
+            <div class="stat-label">KYC Verified</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="stat-total-balance">₹0</div>
+            <div class="stat-label">Total Balance</div>
+          </div>
+        </div>
+
+        <div class="accounts-grid" id="accounts-grid">
+          <!-- Rendered by UI.renderAccounts() -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Transaction Log (right-side panel) ─────────────── -->
+    <aside class="log-area" aria-label="Transaction Log">
+      <div class="log-panel">
+        <div class="log-header">
+          <div class="log-title">
+            📋 Transaction Log
+            <span class="log-count" id="log-count">0</span>
+          </div>
+          <button class="log-clear-btn" id="btn-clear-log" aria-label="Clear log">Clear</button>
+        </div>
+        <div class="log-entries" id="log-entries" role="log" aria-live="polite" aria-label="Transaction history">
+          <div class="log-empty">📋 No transactions yet</div>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- ── Scripts (order matters) ───────────────────────────── -->
+  <script src="js/bank.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
